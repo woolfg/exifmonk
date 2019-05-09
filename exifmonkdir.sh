@@ -1,25 +1,18 @@
 #!/bin/bash
 
-REPLACEPATTERNS=(
-    "s/\s/_/g"
-    "s/ä/ae/g"
-    "s/ü/ue/g"
-    "s/ö/oe/g"
-    "s/ß/ss/g"
-    "s/'//g"
-)
+source $(dirname "$0")/CONFIG
 
 if [ -z "$1" ]; then
     echo "usage: $0 directory"
-    exit
+    exit 1
 fi
 
 if [ ! -d "$1" ]; then
     echo "specified directory $1 is not valid" >&2
-    exit
+    exit 1
 fi
 
-dir=`realpath "$1"`
+dir=$(realpath "$1")
 printf "analyzing directory $dir:\n"
 
 BASEDATE=""
@@ -27,7 +20,7 @@ DIFFERENT=""
 
 for i in "$dir"/*.jpg;
 do
-    DATE=`identify -format %[EXIF:DateTime] "$i" | awk '{print $1}'`
+    DATE=$(identify -format %[${EXIFDATE}] "$i" | awk '{print $1}')
     printf "$i ... $DATE\n"
 
     if [ -z "$BASEDATE" ]; then
@@ -40,14 +33,20 @@ done;
 
 printf "analyzing done.\n"
 
+if [ -z "$BASEDATE" ]; then
+    printf "We couldn't find one file including a date\n"
+    printf "Please, check if there are proper files in the directory\n"
+    exit 1
+fi;
+
 if [ -n "$DIFFERENT" ]; then
     printf "\nthe following files have divergent dates from $BASEDATE:"
     printf "$DIFFERENT\n"
     printf "nothing changed.\n"
-    exit
+    exit 1
 fi;
 
-BASEDATE=`echo $BASEDATE | sed -e "s/://g"`
+BASEDATE=$(echo $BASEDATE | sed -e "s/://g")
 BASEDIR=$(dirname "$dir")
 BASENAME=$(basename "$dir")
 
@@ -64,3 +63,4 @@ printf "\nAll files have the same exif dates so we rename\n"
 printf "$dir -> $NEWDIR\n"
 
 mv "$dir" "$NEWDIR"
+echo $?

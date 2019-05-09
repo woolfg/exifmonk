@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# sed replacement patterns for directories
+# e.g. replace german umlauts or spaces to avoid problems
+
+REPLACEPATTERNS=(
+    "s/\s/_/g"
+    "s/ä/ae/g"
+    "s/ü/ue/g"
+    "s/ö/oe/g"
+    "s/Ä/Ae/g"
+    "s/Ü/Ue/g"
+    "s/Ö/Oe/g"    
+    "s/ß/ss/g"
+    "s/'//g"
+)
+
+EXIFDATE="EXIF:DateTimeOriginal"
