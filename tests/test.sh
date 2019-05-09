@@ -73,6 +73,20 @@ else
 fi
 rm -rf ./test
 
+################################## dates and unknown
+
+mkdir test -p
+cp $samedate test
+touch ./test/unknowndate
+$exifmonk test > /dev/null 2>&1
+
+printf "dir with same date pictures and one unknown..."
+if [ -d "${compactdate}_test" ]; then
+    echo "passed"
+else
+    echo "failed, ${compactdate}_test not a directory"
+fi
+
 ################################## cleanup
 
 echo "cleaning up"

@@ -12,23 +12,33 @@ if [ ! -d "$1" ]; then
     exit 1
 fi
 
+if [ $(which identify) == "" ]; then
+    echo "The ImageMagick 'identify' was not found"
+    exit 1
+fi
+
 dir=$(realpath "$1")
 printf "analyzing directory $dir:\n"
 
 BASEDATE=""
 DIFFERENT=""
 
-for i in "$dir"/*.jpg;
+for i in "$dir"/*;
 do
     DATE=$(identify -format %[${EXIFDATE}] "$i" | awk '{print $1}')
     printf "$i ... $DATE\n"
 
-    if [ -z "$BASEDATE" ]; then
-        BASEDATE="$DATE"
+    if [ -n "$DATE" ]; then
+
+        if [ -z "$BASEDATE" ]; then
+            BASEDATE="$DATE"
+        fi;
+        if [ ! "$DATE" = "$BASEDATE" ]; then
+            DIFFERENT="$DIFFERENT\n$i ... $DATE"
+        fi;
+
     fi;
-    if [ ! "$DATE" = "$BASEDATE" ]; then
-        DIFFERENT="$DIFFERENT\n$i ... $DATE"
-    fi;
+
 done;
 
 printf "analyzing done.\n"
