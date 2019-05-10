@@ -9,7 +9,7 @@ will analyze the directory and rename it accordingly to:
 
 `20190530_my_directoery`
 
-# Functionality
+# Features/Process
 
 - if all pictures were taken on the same day this date is used for a new directory name
 - old dates which are already in the directory name will be removed

@@ -64,7 +64,6 @@ BASENAME=$(basename "$dir")
 for pattern in ${DATEREMOVEEPATTERNS[*]}
 do
     NEEDLE=$(date -d "$BASEDATE" "+${pattern}")
-    echo $NEEDLE
     BASENAME=$(echo "$BASENAME" | sed -e "s/${NEEDLE}//g")
 done
 

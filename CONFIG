@@ -13,8 +13,9 @@ REPLACEPATTERNS=(
     "s/Ö/Oe/g"    
     "s/ß/ss/g"
     "s/'//g"
-    "s/\s-\s/_/g"
+    "s/_-_/_/g"
     "s/_*$//g"
+    "s/^_//g"
 )
 
 # date prefix that is used for constructing the new dir name
@@ -27,6 +28,7 @@ PREFIXDATEPATTERN="%Y%m%d_"
 # (patterns are used for the command date)
 DATEREMOVEEPATTERNS=(
     "%Y%m%d"
+    "%y%m%d"
     "%d\.%m\.%Y"
     "%d\.%m"
 )
