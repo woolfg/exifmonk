@@ -23,8 +23,11 @@ $exifmonk "$badname" > /dev/null 2>&1
 printf "dir with same date pictures and bad chars..."
 if [ -d "${compactdate}_${fixedname}" ]; then
     echo "passed"
+    rm -rf "${compactdate}_${fixedname}"
 else
     echo "failed, ${compactdate}_${fixedname} not a directory"
+    ls
+    rm -rf "$badname"
 fi
 
 ################################## empty dir
@@ -83,8 +86,27 @@ $exifmonk test > /dev/null 2>&1
 printf "dir with same date pictures and one unknown..."
 if [ -d "${compactdate}_test" ]; then
     echo "passed"
+    rm -rf "${compactdate}_test"
 else
     echo "failed, ${compactdate}_test not a directory"
+    rm -rf ./test
+fi
+
+################################## folder with dates in names
+
+dirname="te_st_20190223_23.02.2019"
+mkdir $dirname -p
+cp $samedate $dirname
+$exifmonk $dirname > /dev/null 2>&1
+
+printf "dir with date snippets in name..."
+if [ -d "${compactdate}_te_st" ]; then
+    echo "passed"
+    rm -rf "${compactdate}_te_st"
+else
+    echo "failed, ${compactdate}_test not a directory"
+    ls
+    rm -rf ./test
 fi
 
 ################################## cleanup

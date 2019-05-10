@@ -56,9 +56,17 @@ if [ -n "$DIFFERENT" ]; then
     exit 1
 fi;
 
-BASEDATE=$(echo $BASEDATE | sed -e "s/://g")
+BASEDATE=$(echo $BASEDATE | sed -e "s/:/-/g")
 BASEDIR=$(dirname "$dir")
 BASENAME=$(basename "$dir")
+
+#clean basename from date patters that are already in the name
+for pattern in ${DATEREMOVEEPATTERNS[*]}
+do
+    NEEDLE=$(date -d "$BASEDATE" "+${pattern}")
+    echo $NEEDLE
+    BASENAME=$(echo "$BASENAME" | sed -e "s/${NEEDLE}//g")
+done
 
 #clean basename according to defined rules
 for pattern in ${REPLACEPATTERNS[*]}
@@ -66,7 +74,7 @@ do
     BASENAME=$(echo "$BASENAME" | sed -e "$pattern")
 done
 
-NEWBASENAME="${BASEDATE}_${BASENAME}"
+NEWBASENAME=$(date -d "$BASEDATE" "+${PREFIXDATEPATTERN}")"${BASENAME}"
 NEWDIR="$BASEDIR/$NEWBASENAME"
 
 printf "\nAll files have the same exif dates so we rename\n"

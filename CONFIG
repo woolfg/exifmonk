@@ -13,6 +13,23 @@ REPLACEPATTERNS=(
     "s/Ö/Oe/g"    
     "s/ß/ss/g"
     "s/'//g"
+    "s/\s-\s/_/g"
+    "s/_*$//g"
 )
 
+# date prefix that is used for constructing the new dir name
+# (pattern is used for the command date)
+PREFIXDATEPATTERN="%Y%m%d_"
+
+# as we do not want to have two dates in the dir name
+# we remove dates that are already there and correspond
+# with the right date from the pictures
+# (patterns are used for the command date)
+DATEREMOVEEPATTERNS=(
+    "%Y%m%d"
+    "%d\.%m\.%Y"
+    "%d\.%m"
+)
+
+# date field that is used with identify (ImageMagick) for naming
 EXIFDATE="EXIF:DateTimeOriginal"
