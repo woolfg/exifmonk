@@ -9,6 +9,20 @@ will analyze the directory and rename it accordingly to:
 
 `20190530_my_directoery`
 
+if you want to analyse multiple folders and move them
+to yearly folder:
+
+~~~bash
+mkdir ../target
+for i in *;
+do 
+  ./exifmonkdir.sh "$i" ../target
+done;
+~~~
+
+It will create folders like `../target/2019` and put
+the according folders e.g. `20190530_my_directoery` into it.
+
 # Features/Process
 
 - if all pictures were taken on the same day this date is used for a new directory name

@@ -30,6 +30,23 @@ else
     rm -rf "$badname"
 fi
 
+################################## same date + output dir
+mkdir "$badname" -p
+mkdir "output" -p
+cp $samedate "$badname"
+$exifmonk "$badname" output  > /dev/null 2>&1
+
+printf "dir with same date + output dir..."
+if [ -d "./output/2019/${compactdate}_${fixedname}" ]; then
+    echo "passed"
+else
+    echo "failed, ./output/2019/${compactdate}_${fixedname} not a directory"
+    ls
+    rm -rf "$badname"
+fi
+
+ rm -rf "./output/"
+
 ################################## empty dir
 mkdir test -p
 $exifmonk ./test > /dev/null 2>&1
@@ -90,6 +107,18 @@ if [ -d "${compactdate}_test" ]; then
 else
     echo "failed, ${compactdate}_test not a directory"
     rm -rf ./test
+fi
+
+################################## invalid output dir 
+
+$exifmonk ./ ./test_nononono > /dev/null 2>&1
+returncode="$?"
+
+printf "invalid output dir..."
+if [ "$returncode" == 0 ]; then
+    echo "failed, should exit with error"
+else
+    echo "passed"
 fi
 
 ################################## folder naming tests

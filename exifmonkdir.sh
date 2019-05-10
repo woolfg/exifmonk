@@ -3,12 +3,17 @@
 source $(dirname "$0")/CONFIG
 
 if [ -z "$1" ]; then
-    echo "usage: $0 directory"
+    echo "usage: $0 directory [targetDirectory]"
     exit 1
 fi
 
 if [ ! -d "$1" ]; then
     echo "specified directory $1 is not valid" >&2
+    exit 1
+fi
+
+if [ -n "$2" ] && [ ! -d "$2" ]; then
+    echo "specified output directory $outputdir is not valid" >&2
     exit 1
 fi
 
@@ -18,6 +23,7 @@ if [ $(which identify) == "" ]; then
 fi
 
 dir=$(realpath "$1")
+targetdir=$(realpath "$2")
 printf "analyzing directory $dir:\n"
 
 BASEDATE=""
@@ -72,6 +78,11 @@ for pattern in ${REPLACEPATTERNS[*]}
 do
     BASENAME=$(echo "$BASENAME" | sed -e "$pattern")
 done
+
+if [ -n "$targetdir" ]; then
+    BASEDIR="${targetdir}/"$(date -d "$BASEDATE" "+${TARGETDIRPATTERN}")
+    mkdir -p "$BASEDIR"
+fi
 
 NEWBASENAME=$(date -d "$BASEDATE" "+${PREFIXDATEPATTERN}")"${BASENAME}"
 NEWDIR="$BASEDIR/$NEWBASENAME"

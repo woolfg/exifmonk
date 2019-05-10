@@ -33,5 +33,11 @@ DATEREMOVEEPATTERNS=(
     "%d\.%m"
 )
 
+# if an output dir is pecified the pattern is applied
+# to move all directories in a corresponding directory
+# with the following pattern,
+# e.g. 20190101_test will be moved in 2019
+TARGETDIRPATTERN="%Y"
+
 # date field that is used with identify (ImageMagick) for naming
 EXIFDATE="EXIF:DateTimeOriginal"
