@@ -90,5 +90,8 @@ NEWDIR="$BASEDIR/$NEWBASENAME"
 printf "\nAll files have the same exif dates so we rename\n"
 printf "$dir -> $NEWDIR\n"
 
-mv "$dir" "$NEWDIR"
-echo $?
+if [ "$dir" == "$NEWDIR" ]; then
+    printf "name has already the right pattern, no change needed\n"
+else
+    mv "$dir" "$NEWDIR"
+fi

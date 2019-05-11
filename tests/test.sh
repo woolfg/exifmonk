@@ -144,6 +144,7 @@ nametest "te_st_20190223_23.02.2019" "20190223_te_st"
 nametest "20190223 - test1 - test2" "20190223_test1_test2"
 nametest "20190223_-_Test_Test2" "20190223_Test_Test2"
 nametest "test190223" "20190223_test"
+nametest "20190223_test" "20190223_test"
 
 ################################## cleanup
 
